@@ -1,0 +1,8 @@
+# Git Workflow
+1. git init
+2. git status
+3. git add .
+4. git commit -m "Initial commit with email validation & user list"
+5. git branch -M main
+6. git remote add origin <your-repo-link>
+7. git push -u origin main
