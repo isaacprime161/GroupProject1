@@ -94,3 +94,29 @@ class LoginScreen {
         </html>
         <?php
     }
+
+    // Handle login logic with DB
+    public function handleLogin() {
+        if (isset($_POST['login'])) {
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+
+            // Query user from DB
+            $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && password_verify($password, $user['password'])) {
+                echo "<p style='color:green; text-align:center;'>✅ Login successful! Welcome, {$user['email']}.</p>";
+                // TODO: Start session and redirect to dashboard
+            } else {
+                echo "<p style='color:red; text-align:center;'>❌ Invalid email or password.</p>";
+            }
+        }
+    }
+}
+
+// Run
+$loginScreen = new LoginScreen();
+$loginScreen->handleLogin();
+$loginScreen->show();
