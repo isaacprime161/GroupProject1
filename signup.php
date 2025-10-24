@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 // If the request is GET, show the registration form
 if ($_SERVER["REQUEST_METHOD"] === "GET") {
 ?>
@@ -121,10 +122,26 @@ $dbname = "geolink";
 
 $conn = new mysqli($host, $user, $pass, $dbname);
 
+=======
+// signup.php
+header("Content-Type: application/json");
+
+// Database config (MariaDB connection)
+$host = "localhost:3305";   // or "localhost"
+$user = "root";        // your MariaDB username
+$pass = "Kvmurji7";            // your MariaDB password
+$dbname = "geolink";
+
+// Connect to MariaDB
+$conn = new mysqli($host, $user, $pass, $dbname);
+
+// Check connection
+>>>>>>> 51945d849200cd87ca75b75593fff21de7f61711
 if ($conn->connect_error) {
     die(json_encode(["status" => "error", "message" => "DB Connection failed: " . $conn->connect_error]));
 }
 
+<<<<<<< HEAD
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $firstname = $conn->real_escape_string($_POST['firstname']);
     $lastname  = $conn->real_escape_string($_POST['lastname']);
@@ -135,6 +152,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $password  = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
     // Check if email already exists
+=======
+// Handle POST request
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $firstname = $conn->real_escape_string($_POST['firstname']);
+    $lastname  = $conn->real_escape_string($_POST['lastname']);
+    $email     = $conn->real_escape_string($_POST['email']);
+    $password  = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+    // Check if email exists
+>>>>>>> 51945d849200cd87ca75b75593fff21de7f61711
     $checkEmail = $conn->query("SELECT * FROM users WHERE email='$email'");
     if ($checkEmail->num_rows > 0) {
         echo json_encode(["status" => "error", "message" => "Email already registered"]);
@@ -142,8 +169,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Insert user
+<<<<<<< HEAD
     $sql = "INSERT INTO users (firstname, lastname, age, gender, phonenumber, email, password)
             VALUES ('$firstname', '$lastname', '$age', '$gender', '$phonenumber', '$email', '$password')";
+=======
+    $sql = "INSERT INTO users (firstname, lastname, email, password)
+            VALUES ('$firstname', '$lastname', '$email', '$password')";
+>>>>>>> 51945d849200cd87ca75b75593fff21de7f61711
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["status" => "success", "message" => "Registration successful"]);
@@ -151,6 +183,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo json_encode(["status" => "error", "message" => "DB Error: " . $conn->error]);
     }
 }
+<<<<<<< HEAD
 
 $conn->close();
 ?>
+=======
+$conn->close();
+>>>>>>> 51945d849200cd87ca75b75593fff21de7f61711
