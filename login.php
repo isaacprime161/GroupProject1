@@ -1,24 +1,22 @@
 <?php
-
 class LoginScreen {
 
     private $db;
 
     // Constructor to create a DB connection
     public function __construct() {
-       
-        $host = "127.0.0.1";   
-        $dbname = "geolink"; 
-        $user = "root"; 
-        $pass = "0000"; 
+        $host = "127.0.0.1";
+        $dbname = "geolink";
+        $user = "root";
+        $pass = "0000";
 
         try {
             $this->db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
             $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die("Database connection failed: " . $e->getMessage());
-            }
         }
+    }
 
     // Show the login form
     public function show() {
@@ -34,46 +32,68 @@ class LoginScreen {
                     justify-content: center;
                     align-items: center;
                     height: 100vh;
-                    font-family: cursive, sans-serif;
-                    background: #f8f8f8;
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                    background: #f9fafb;
+                    margin: 0;
                 }
                 .container {
                     text-align: center;
                     background: white;
-                    padding: 30px;
-                    border-radius: 12px;
-                    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-                    width: 350px;
+                    padding: 35px;
+                    border-radius: 16px;
+                    box-shadow: 0 6px 20px rgba(37, 99, 235, 0.15);
+                    width: 360px;
                 }
                 img {
                     width: 100px;
                     height: 100px;
                     border-radius: 50%;
+                    margin-bottom: 10px;
+                    border: 3px solid #2563eb;
+                }
+                h1 {
+                    color: #2563eb;
+                    margin-bottom: 20px;
                 }
                 input {
                     width: 90%;
                     padding: 10px;
                     margin: 10px 0;
-                    border: 1px solid #ccc;
+                    border: 1px solid #d1d5db;
                     border-radius: 6px;
+                    font-size: 14px;
+                    transition: border 0.3s ease;
+                }
+                input:focus {
+                    border-color: #2563eb;
+                    outline: none;
+                    box-shadow: 0 0 5px rgba(37, 99, 235, 0.3);
                 }
                 button {
-                    background: brown;
+                    background: #2563eb;
                     color: white;
                     border: none;
-                    padding: 10px 20px;
+                    padding: 10px 22px;
                     border-radius: 6px;
                     cursor: pointer;
                     font-weight: bold;
+                    transition: background 0.3s ease;
                 }
                 button:hover {
-                    background: darkred;
+                    background: #1d4ed8;
                 }
                 .link {
-                    margin-top: 15px;
+                    margin-top: 18px;
                     display: block;
                     font-weight: bold;
                     font-size: 14px;
+                    color: #2563eb;
+                    text-decoration: none;
+                    transition: color 0.3s ease;
+                }
+                .link:hover {
+                    color: #1d4ed8;
+                    text-decoration: underline;
                 }
             </style>
         </head>
@@ -88,7 +108,7 @@ class LoginScreen {
                     <button type="submit" name="login">Login</button>
                 </form>
 
-                <a href="signup.php" class="link">Already have an account? Register</a>
+                <a href="signup.php" class="link">Don't have an account? Register</a>
             </div>
         </body>
         </html>
@@ -107,10 +127,14 @@ class LoginScreen {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
             if ($user && password_verify($password, $user['password'])) {
-                echo "<p style='color:green; text-align:center;'>✅ Login successful! Welcome, {$user['email']}.</p>";
-                // TODO: Start session and redirect to dashboard
+                echo "<p style='color:#16a34a; text-align:center;'>✅ Login successful! Welcome, {$user['email']}.</p>";
+                
+                // Redirect to homepage
+                header("Location: home.php");
+                exit();
+
             } else {
-                echo "<p style='color:red; text-align:center;'>❌ Invalid email or password.</p>";
+                echo "<p style='color:#dc2626; text-align:center;'>❌ Invalid email or password.</p>";
             }
         }
     }
@@ -120,3 +144,4 @@ class LoginScreen {
 $loginScreen = new LoginScreen();
 $loginScreen->handleLogin();
 $loginScreen->show();
+?>
