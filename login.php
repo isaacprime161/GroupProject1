@@ -5,18 +5,15 @@ class LoginScreen {
 
     // Constructor to create a DB connection
     public function __construct() {
-<<<<<<< HEAD
         $host = "127.0.0.1";
         $dbname = "geolink";
         $user = "root";
         $pass = "0000";
-=======
        
         $host = "localhost:3305";   
         $dbname = "geolink"; 
         $user = "root"; 
         $pass = "Kvmurji7"; 
->>>>>>> 51945d849200cd87ca75b75593fff21de7f61711
 
         try {
             $this->db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
