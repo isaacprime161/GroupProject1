@@ -5,7 +5,7 @@ require_once _DIR_ . '/../vendor/autoload.php';
 $dotenv = Dotenv\Dotenv::createImmutable(_DIR_);
 $dotenv->load();
 
-// Read database settings from .env
+// Read database settings
 $host = $_ENV['DB_HOST'];
 $db   = $_ENV['DB_NAME'];
 $user = $_ENV['DB_USER'];
