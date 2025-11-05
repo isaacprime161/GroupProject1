@@ -1,33 +1,40 @@
 <?php
-class LoginScreen {
+session_start();
+require_once "db_connection.php";
 
+class LoginScreen {
     private $db;
 
-    // Constructor to create a DB connection
     public function __construct() {
-<<<<<<< HEAD
-        $host = "127.0.0.1";
-        $dbname = "geolink";
-        $user = "root";
-        $pass = "0000";
-=======
-       
-        $host = "localhost:3305";   
-        $dbname = "geolink"; 
-        $user = "root"; 
-        $pass = "Kvmurji7"; 
->>>>>>> 51945d849200cd87ca75b75593fff21de7f61711
-
-        try {
-            $this->db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
-            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        } catch (PDOException $e) {
-            die("Database connection failed: " . $e->getMessage());
-        }
+        $database = new Database();
+        $this->db = $database->connect();
     }
 
-    // Show the login form
-    public function show() {
+    public function handleLogin() {
+        $message = "";
+
+        if (isset($_POST['login'])) {
+            $email = trim($_POST['email']);
+            $password = trim($_POST['password']);
+
+            $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
+            $stmt->execute([$email]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($user && password_verify($password, $user['password'])) {
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['email'] = $user['email'];
+                header("Location: home.php");
+                exit();
+            } else {
+                $message = "❌ Invalid email or password.";
+            }
+        }
+
+        return $message;
+    }
+
+    public function show($message = "") {
         ?>
         <!DOCTYPE html>
         <html lang="en">
@@ -103,12 +110,21 @@ class LoginScreen {
                     color: #1d4ed8;
                     text-decoration: underline;
                 }
+                .message {
+                    color: #dc2626;
+                    margin-bottom: 10px;
+                    font-weight: bold;
+                }
             </style>
         </head>
         <body>
             <div class="container">
-                <img src="pp.png" alt="reg">
+                <img src="assets/login.png" alt="login image">
                 <h1>Login Here</h1>
+
+                <?php if (!empty($message)): ?>
+                    <div class="message"><?= htmlspecialchars($message) ?></div>
+                <?php endif; ?>
 
                 <form method="POST" action="">
                     <input type="email" name="email" placeholder="Enter email" required><br>
@@ -122,34 +138,9 @@ class LoginScreen {
         </html>
         <?php
     }
-
-    // Handle login logic with DB
-    public function handleLogin() {
-        if (isset($_POST['login'])) {
-            $email = trim($_POST['email']);
-            $password = trim($_POST['password']);
-
-            // Query user from DB
-            $stmt = $this->db->prepare("SELECT * FROM users WHERE email = ?");
-            $stmt->execute([$email]);
-            $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-            if ($user && password_verify($password, $user['password'])) {
-                echo "<p style='color:#16a34a; text-align:center;'>✅ Login successful! Welcome, {$user['email']}.</p>";
-                
-                // Redirect to homepage
-                header("Location: home.php");
-                exit();
-
-            } else {
-                echo "<p style='color:#dc2626; text-align:center;'>❌ Invalid email or password.</p>";
-            }
-        }
-    }
 }
 
-// Run
 $loginScreen = new LoginScreen();
-$loginScreen->handleLogin();
-$loginScreen->show();
+$message = $loginScreen->handleLogin();
+$loginScreen->show($message);
 ?>

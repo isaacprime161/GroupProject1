@@ -9,8 +9,9 @@ if ($conn->connect_error) die("Database connection failed: " . $conn->connect_er
 
 $welcome_message = "Welcome to Geolink!";
 $website_name = "Geolink";
-$description = "This dashboard is designed to provide an intuitive and engaging experience for our users and clients.
-Explore below to learn more about how you can interact with our platform.";
+$description = "Looking for a place to get connected with organisatiosn relating to your field?
+ Ths is the place for you as we are well versed in connecting organisations with your area of expertise.
+  Stop the hustle and join GeoLink Today! ";
 ?>
 
 <!DOCTYPE html>
@@ -42,11 +43,12 @@ Explore below to learn more about how you can interact with our platform.";
       <div class="bg-green-100 p-6 rounded-2xl shadow hover:shadow-lg transition">
         <h3 class="text-xl font-bold mb-3 text-green-800">Organisations</h3>
         <p>We welcome all organisations to join Geolink. Choose clients within our employee pool. Choose yourself by choosing us!!</p>
+        <a href="adminsignup.php" class="inline-block mt-5 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Join Geolink Today</a>
       </div>
       <div class="bg-yellow-100 p-6 rounded-2xl shadow hover:shadow-lg transition">
         <h3 class="text-xl font-bold mb-3 text-yellow-800">About Section</h3>
         <p>Learn more about our mission, vision, and the values that drive our innovative solutions.</p>
-        <a href="#" class="inline-block mt-5 bg-yellow-500 text-white px-4 py-2 rounded-lg hover:bg-yellow-600">Learn More</a>
+        
       </div>
     </div>
   </section>
