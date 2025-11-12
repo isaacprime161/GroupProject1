@@ -1,6 +1,7 @@
 <?php
 // job.php — Profession Explorer Page
 
+
 $professions = [
     ["name" => "Architecture", "image" => "https://images.unsplash.com/photo-1503387762-592deb58ef4e"],
     ["name" => "Engineering", "image" => "https://images.unsplash.com/photo-1504384308090-c894fdcc538d"],
