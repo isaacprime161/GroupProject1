@@ -8,6 +8,22 @@ class LoginScreen {
     public function __construct() {
         $database = new Database();
         $this->db = $database->connect();
+        $host = "127.0.0.1";
+        $dbname = "geolink";
+        $user = "root";
+        $pass = "0000";
+       
+        $host = "localhost:3305";   
+        $dbname = "geolink"; 
+        $user = "root"; 
+        $pass = "Kvmurji7"; 
+
+        try {
+            $this->db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);
+            $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            die("Database connection failed: " . $e->getMessage());
+        }
     }
 
     public function handleLogin() {

@@ -228,7 +228,7 @@ $professions = [
             </div>
         </div>
         <div class="bottom-link">
-            <a href="admin.php">
+            <a href="adminlogin.php">
                 <img src="https://cdn-icons-png.flaticon.com/512/3524/3524659.png" alt="Admin">
                 Admin Panel
             </a>
