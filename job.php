@@ -1,6 +1,7 @@
 <?php
 // job.php — Profession Explorer Page
 
+
 $professions = [
     [
         "name" => "Architecture",
