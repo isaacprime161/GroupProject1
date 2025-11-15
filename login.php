@@ -13,10 +13,7 @@ class LoginScreen {
         $user = "root";
         $pass = "0000";
        
-        $host = "localhost:3305";   
-        $dbname = "geolink"; 
-        $user = "root"; 
-        $pass = "Kvmurji7"; 
+         
 
         try {
             $this->db = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8mb4", $user, $pass);

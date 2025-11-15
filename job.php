@@ -2,12 +2,36 @@
 // job.php — Profession Explorer Page
 
 $professions = [
-    ["name" => "Architecture", "image" => "https://images.unsplash.com/photo-1503387762-592deb58ef4e"],
-    ["name" => "Engineering", "image" => "https://images.unsplash.com/photo-1504384308090-c894fdcc538d"],
-    ["name" => "Medicine", "image" => "https://images.unsplash.com/photo-1576091160550-2173dba999ef"],
-    ["name" => "Law", "image" => "assets/law.jpg"],
-    ["name" => "Education", "image" => "assets/education.jpg"],
-    ["name" => "Information Technology", "image" => "https://images.unsplash.com/photo-1519389950473-47ba0277781c"]
+    [
+        "name" => "Architecture",
+        "image" => "https://images.unsplash.com/photo-1503387762-592deb58ef4e",
+        "link" => "architecture.php"
+    ],
+    [
+        "name" => "Engineering",
+        "image" => "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
+        "link" => "engineering.php"
+    ],
+    [
+        "name" => "Medicine",
+        "image" => "https://images.unsplash.com/photo-1576091160550-2173dba999ef",
+        "link" => "medicine_job.php"
+    ],
+    [
+        "name" => "Law",
+        "image" => "assets/law.jpg",
+        "link" => "law_job.php"
+    ],
+    [
+        "name" => "Education",
+        "image" => "assets/education.jpg",
+        "link" => "education.php"
+    ],
+    [
+        "name" => "Information Technology",
+        "image" => "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+        "link" => "IT.php"
+    ]
 ];
 ?>
 
@@ -156,6 +180,8 @@ $professions = [
             cursor: pointer;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             background-color: white;
+            text-decoration: none;
+            color: white;
         }
 
         .card:hover {
@@ -246,10 +272,10 @@ $professions = [
 
         <div class="card-container">
             <?php foreach ($professions as $profession): ?>
-                <div class="card">
+                <a href="<?= $profession['link'] ?>" class="card">
                     <img src="<?= $profession['image'] ?>" alt="<?= $profession['name'] ?>">
                     <h2><?= $profession['name'] ?></h2>
-                </div>
+                </a>
             <?php endforeach; ?>
         </div>
     </div>
