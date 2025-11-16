@@ -11,7 +11,7 @@ $professions = [
     [
         "name" => "Engineering",
         "image" => "https://images.unsplash.com/photo-1504384308090-c894fdcc538d",
-        "link" => "engineering.php"
+        "link" => "engineering_jobs.php"
     ],
     [
         "name" => "Medicine",
@@ -21,7 +21,7 @@ $professions = [
     [
         "name" => "Law",
         "image" => "assets/law.jpg",
-        "link" => "law_job.php"
+        "link" => "law_jobs.php"
     ],
     [
         "name" => "Education",

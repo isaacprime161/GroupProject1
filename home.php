@@ -9,8 +9,7 @@ if (!isset($_SESSION['email'])) {
 }  
 
 // Connect to the database 
-$database = new Database(); 
-$pdo = $database->connect();  
+$pdo = ConnToDB();  
 
 // Fetch user's first name from DB using email in session 
 $email = $_SESSION['email']; 

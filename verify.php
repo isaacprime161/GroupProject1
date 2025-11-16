@@ -1,18 +1,16 @@
 <?php
-$host = "127.0.0.1";
-$user = "root";
-$pass = "0000";
-$dbname = "geolink";
-$conn = new mysqli($host, $user, $pass, $dbname);
+require_once 'db_connection.php';
+$pdo = ConnToDB();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $email = $conn->real_escape_string($_POST["email"]);
     $code = $conn->real_escape_string($_POST["code"]);
 
-    $result = $conn->query("SELECT * FROM users WHERE email='$email' AND verification_code='$code'");
 
-    if ($result->num_rows > 0) {
-        $conn->query("UPDATE users SET verified=TRUE, verification_code=NULL WHERE email='$email'");
+    $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ? AND verification_code = ?");
+    $stmt->execute([$email, $code]);
+    if ($stmt->rowCount() > 0) {
+        $pdo->prepare("UPDATE users SET verified=TRUE, verification_code=NULL WHERE email = ?")->execute([$email]);
         echo "<script>alert('Email verified successfully! You can now log in.');window.location='login.php';</script>";
     } else {
         echo "<script>alert('Invalid verification code! Please try again.');</script>";

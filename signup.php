@@ -130,15 +130,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 // ------------------- PHP Backend Logic -------------------
 header("Content-Type: application/json");
 
-$host = "127.0.0.1";
-$user = "root";
-$pass = "0000";
-$dbname = "geolink";
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-if ($conn->connect_error) {
-    die(json_encode(["status" => "error", "message" => "DB Connection failed: " . $conn->connect_error]));
-}
+require_once 'db_connection.php';
+$pdo = ConnToDB();
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $firstname = $conn->real_escape_string($_POST['firstname']);
@@ -151,17 +144,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $code      = rand(100000, 999999); // 6-digit verification code
 
     // Check if email already exists
-    $checkEmail = $conn->query("SELECT * FROM users WHERE email='$email'");
-    if ($checkEmail->num_rows > 0) {
-        echo json_encode(["status" => "error", "message" => "Email already registered"]);
+   
+    $checkEmail = $pdo->prepare("SELECT * FROM users WHERE email = ?");
+    $checkEmail->execute([$email]);
+    if ($checkEmail->rowCount() > 0) {
+        echo json_encode(["status" => "error", "message" => "Email already exists."]);
         exit;
     }
 
     // Insert user with verification code and verified = 0
-    $sql = "INSERT INTO users (firstname, lastname, age, gender, phonenumber, email, password, verification_code, verified)
-            VALUES ('$firstname', '$lastname', '$age', '$gender', '$phonenumber', '$email', '$password', '$code', FALSE)";
+  
+        $sql = "INSERT INTO users (firstname, lastname, age, gender, phonenumber, email, password, verification_code, verified)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, FALSE)";
+        $stmt = $pdo->prepare($sql);
+        if ($stmt->execute([$firstname, $lastname, $age, $gender, $phonenumber, $email, $password, $code])) {
 
-    if ($conn->query($sql) === TRUE) {
+        if ($conn->query($sql) === TRUE) {
         // Send verification email
         $mail = new PHPMailer(true);
         try {
@@ -189,7 +187,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     } else {
         echo json_encode(["status" => "error", "message" => "DB Error: " . $conn->error]);
     }
+    } 
 }
 
-$conn->close();
 ?>

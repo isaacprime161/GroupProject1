@@ -1,18 +1,7 @@
 <?php
 session_start();
 
-// --- Database Connection ---
-$host = "localhost";
-$dbname = "geolink";
-$user = "root";
-$pass = "0000";
-
-try {
-    $pdo = new PDO("mysql:host=$host;dbname=$dbname", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    die("Database connection failed: " . $e->getMessage());
-}
+require_once 'db_connection.php';
 
 // --- Handle Login ---
 if ($_SERVER["REQUEST_METHOD"] === "POST") {

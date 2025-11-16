@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+require_once 'db_connection.php';
 session_start();
 
 if (!isset($_SESSION['org_id'])) {

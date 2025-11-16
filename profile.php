@@ -1,45 +1,32 @@
 <?php
 session_start();
+require_once 'db_connection.php';
 
-// --- Database Connection ---
-$host = "127.0.0.1";
-$user = "root";
-$pass = "0000";
-$dbname = "mysql";
-$conn = new mysqli($host, $user, $pass, $dbname);
-if ($conn->connect_error) die("Database connection failed: " . $conn->connect_error);
-
-// --- Example: Logged-in user ID stored in session ---
-// (You’ll set this after login; e.g. $_SESSION['user_id'] = $user_id;)
 if (!isset($_SESSION['user_id'])) {
-  // Redirect to login if not logged in
   header("Location: login.php");
   exit;
 }
 
 $user_id = $_SESSION['user_id'];
+$pdo = ConnToDB();
 
-// --- Fetch User Details ---
+// Fetch User Details
 $sql = "SELECT full_name, email, phone FROM users WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $user_id);
-$stmt->execute();
-$result = $stmt->get_result();
-$user = $result->fetch_assoc();
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$user_id]);
+$user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-// --- Handle Profile Update ---
+$message = '';
+// Handle Profile Update
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $full_name = $_POST['full_name'];
   $email = $_POST['email'];
   $phone = $_POST['phone'];
 
   $update_sql = "UPDATE users SET full_name = ?, email = ?, phone = ? WHERE id = ?";
-  $update_stmt = $conn->prepare($update_sql);
-  $update_stmt->bind_param("sssi", $full_name, $email, $phone, $user_id);
-
-  if ($update_stmt->execute()) {
+  $update_stmt = $pdo->prepare($update_sql);
+  if ($update_stmt->execute([$full_name, $email, $phone, $user_id])) {
     $message = "Profile updated successfully!";
-    // Refresh user info
     $user = ['full_name' => $full_name, 'email' => $email, 'phone' => $phone];
   } else {
     $message = "Error updating profile.";
@@ -98,4 +85,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 </html>
 
-<?php $conn->close(); ?>
+

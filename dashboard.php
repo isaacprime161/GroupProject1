@@ -1,11 +1,5 @@
 <?php
-$host = "127.0.0.1";
-$user = "root";
-$pass = "0000";
-$dbname = "geolink";
-
-$conn = new mysqli($host, $user, $pass, $dbname);
-if ($conn->connect_error) die("Database connection failed: " . $conn->connect_error);
+require_once 'db_connection.php'; 
 
 $welcome_message = "Welcome to Geolink!";
 $website_name = "Geolink";
@@ -68,4 +62,3 @@ $description = "Looking for a place to get connected with organisatiosn relating
 </body>
 </html>
 
-<?php $conn->close(); ?>
